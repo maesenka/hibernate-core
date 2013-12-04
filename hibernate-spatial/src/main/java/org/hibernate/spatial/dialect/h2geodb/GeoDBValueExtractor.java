@@ -47,6 +47,10 @@ public class GeoDBValueExtractor extends AbstractJTSGeometryValueExtractor {
 	public Geometry toJTS(Object object) {
 		if (object == null)
 			return null;
+		
+		if (object instanceof Geometry)
+			return (Geometry) object;
+		
 		try {
 			if (object instanceof Blob) {
 				return WKB.fromWKB(toByteArray((Blob) object), getGeometryFactory());
