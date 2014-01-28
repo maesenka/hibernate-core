@@ -310,7 +310,7 @@ public class OracleSpatial10gDialect extends Oracle10gDialect implements
 		if ( negate ) {
 			buffer.append( "CASE " );
 		}
-		buffer = new StringBuffer( "SDO_RELATE(" ).append( arg1 )
+		buffer.append( "SDO_RELATE(" ).append( arg1 )
 				.append( "," )
 				.append( arg2 )
 				.append( ",'mask=" + mask + "') " );
