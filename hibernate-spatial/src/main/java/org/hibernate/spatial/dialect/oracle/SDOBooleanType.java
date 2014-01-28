@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2007-2012 Geovise BVBA
+ *  Copyright © 2007-2014 Geovise BVBA
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,9 @@ import java.sql.Types;
 class SDOBooleanType extends BooleanType {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final SDOBooleanType INSTANCE = new SDOBooleanType();
+	
 	/**
 	 * <p/>
 	 * This type's name is <tt>sdo_boolean</tt>
