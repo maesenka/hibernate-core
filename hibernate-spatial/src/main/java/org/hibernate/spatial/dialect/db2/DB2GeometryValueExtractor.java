@@ -81,7 +81,10 @@ public class DB2GeometryValueExtractor<X> extends
 				
 				return geom;
 			} else if (geomObj instanceof Blob) {
-				return null;
+				getLogger().error("BLOB representation of geometry not supported by DB2");				
+				throw new IllegalArgumentException(geomObj.getClass()
+						.getCanonicalName()
+						+ " not handled by DB2 as spatial value");
 			} else {
 				throw new IllegalArgumentException(geomObj.getClass()
 						.getCanonicalName()
@@ -115,7 +118,6 @@ public class DB2GeometryValueExtractor<X> extends
 
 		} catch (Exception e) {
 			getLogger().error("Could not convert database CLOB object to String.");
-			e.printStackTrace();
 		} finally {
 			try {
 				if (in != null) {
@@ -123,7 +125,6 @@ public class DB2GeometryValueExtractor<X> extends
 				}
 			} catch (IOException e) {
 				getLogger().error("Could not close input stream.");
-				e.printStackTrace();
 			}
 		}
 		String result = out.toString();
