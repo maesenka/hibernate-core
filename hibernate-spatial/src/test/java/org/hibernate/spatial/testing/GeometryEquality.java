@@ -39,7 +39,7 @@ public class GeometryEquality {
 			return geom2 == null;
 		}
 		if (geom1.isEmpty()) {
-			return geom2.isEmpty() && geom1.getSRID() == geom2.getSRID();
+			return geom2.isEmpty() &&  testSRID(geom1, geom2);
 		}
 		if (geom1 instanceof GeometryCollection) {
 			if (!(geom2 instanceof GeometryCollection)) {
@@ -59,7 +59,18 @@ public class GeometryEquality {
 			return testSimpleGeometryEquality(geom1, geom2);
 		}
 	}
-
+	
+	/**
+	 * Test whether the SRIDs of two geometries are the same.
+	 *
+	 * @param geom1
+	 * @param geom2
+	 * @return true if SRIDs are the same
+	 */	
+   protected boolean testSRID(Geometry geom1, Geometry geom2) {
+	   return geom1.getSRID() == geom2.getSRID();
+   }
+   
 	/**
 	 * Test whether two geometries, not of type GeometryCollection are equal.
 	 *
@@ -69,7 +80,7 @@ public class GeometryEquality {
 	 */
 	protected boolean testSimpleGeometryEquality(Geometry geom1, Geometry geom2) {
 		//return geom1.equals(geom2);
-		return testTypeAndVertexEquality(geom1, geom2) && geom1.getSRID() == geom2.getSRID();
+		return testTypeAndVertexEquality(geom1, geom2) && testSRID(geom1, geom2);
 	}
 
 	protected boolean testTypeAndVertexEquality(Geometry geom1, Geometry geom2) {

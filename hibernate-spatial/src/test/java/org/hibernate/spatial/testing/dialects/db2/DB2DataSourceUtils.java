@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2007-2012 Geovise BVBA
+ *  Copyright © 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,27 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.hibernate.spatial;
+
+package org.hibernate.spatial.testing.dialects.db2;
+
+import org.hibernate.spatial.testing.DataSourceUtils;
+import org.hibernate.spatial.testing.SQLExpressionTemplate;
+
+import java.sql.SQLException;
 
 /**
- * Enumeration of types of Spatial Aggregation
- *
- * @author Karel Maesen
+ * @author David Adler, Adtech Geospatial
+ *         creation-date: 5/22/2014
  */
-public interface SpatialAggregate {
+public class DB2DataSourceUtils extends DataSourceUtils {
 
-	public static final int EXTENT = 1;
-	public static final int UNION = 2;
+	public DB2DataSourceUtils(String jdbcDriver, String jdbcUrl, String jdbcUser, String jdbcPass, SQLExpressionTemplate sqlExpressionTemplate) {
+		super(jdbcDriver, jdbcUrl, jdbcUser, jdbcPass, sqlExpressionTemplate);
+	}
+
+	private void createIndex() throws SQLException {
+		String sql = "create index idx_spatial_geomtest on geomtest (geom) extend using db2gse.spatial_index(0.1,0,0)";
+		executeStatement(sql);
+	}
 
 }

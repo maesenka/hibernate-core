@@ -86,7 +86,8 @@ public class TestStoreRetrieve extends SpatialFunctionalTestCase {
 				Geometry retrievedGeometry = retrievedEntity.getGeom();
 				Geometry storedGeometry = storedEntity.getGeom();
 				String msg = createFailureMessage(storedEntity.getId(), storedGeometry, retrievedGeometry);
-				assertTrue(msg, geometryEquality.test(storedGeometry, retrievedGeometry));
+				boolean equality = geometryEquality.test(storedGeometry, retrievedGeometry);
+				assertTrue(msg, equality);
 			}
 			tx.commit();
 		} catch (Exception e) {
@@ -124,6 +125,7 @@ public class TestStoreRetrieve extends SpatialFunctionalTestCase {
 				id = element.id;
 				tx = session.beginTransaction();
 				GeomEntity entity = GeomEntity.createFrom(element);
+				getLogger().info("id: " + id + "; wkt: " + entity.getGeom().toText());
 				stored.put(entity.getId(), entity);
 				session.save(entity);
 				tx.commit();

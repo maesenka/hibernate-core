@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright Â© 2007-2012 Geovise BVBA
+ *  Copyright © 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,28 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.hibernate.spatial;
+package org.hibernate.spatial.dialect.db2;
+
+import junit.framework.TestCase;
+import org.hibernate.spatial.SpatialDialect;
+import org.hibernate.spatial.SpatialFunction;
+import org.junit.Test;
 
 /**
- * Enumeration of types of Spatial Aggregation
+ * Tests support for DB2 spatial functions
  *
- * @author Karel Maesen
+ * @author David Adler, Adtech Geospatial
+ *         creation-date: 5/22/2014
  */
-public interface SpatialAggregate {
 
-	public static final int EXTENT = 1;
-	public static final int UNION = 2;
+public class DB2DialectTest extends TestCase{
 
+	SpatialDialect dialect = new DB2SpatialDialect();
+
+	@Test
+	public void testSupports() throws Exception {
+		for (SpatialFunction sf : SpatialFunction.values()) {
+			assertTrue("Dialect doesn't support " + sf, dialect.supports(sf));
+		}
+	}
 }

@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2007-2012 Geovise BVBA
+ *  Copyright © 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,29 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.hibernate.spatial;
+
+package org.hibernate.spatial.testing.dialects.db2;
+
+import org.hibernate.spatial.testing.SQLExpressionTemplate;
+import org.hibernate.spatial.testing.TestDataElement;
 
 /**
- * Enumeration of types of Spatial Aggregation
- *
- * @author Karel Maesen
+ * @author David Adler
+ *         creation-date: 5/22/2014 
  */
-public interface SpatialAggregate {
+public class DB2ExpressionTemplate implements SQLExpressionTemplate {
 
-	public static final int EXTENT = 1;
-	public static final int UNION = 2;
+	final String SQL_TEMPLATE = "insert into geomtest (id, type, geom) values (%d, '%s', DB2GSE.ST_GEOMETRY('%s', %d))";
+
+	public String toInsertSql(TestDataElement testDataElement) {
+		return String.format(
+				SQL_TEMPLATE,
+				testDataElement.id,
+				testDataElement.type,
+				testDataElement.wkt,
+				testDataElement.srid
+		);
+	}
+
 
 }

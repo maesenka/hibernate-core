@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright Â© 2007-2012 Geovise BVBA
+ *  Copyright © 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,25 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.hibernate.spatial;
+
+package org.hibernate.spatial.dialect.db2;
+
+import java.sql.Connection;
+
+import org.hibernate.spatial.dialect.AbstractJTSGeometryValueBinder;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Enumeration of types of Spatial Aggregation
- *
- * @author Karel Maesen
+ * @author David Adler, Adtech Geospatial
+ *         creation-date: 5/22/2014
  */
-public interface SpatialAggregate {
+public class DB2GeometryValueBinder extends AbstractJTSGeometryValueBinder {
 
-	public static final int EXTENT = 1;
-	public static final int UNION = 2;
+	@Override
+	protected Object toNative(Geometry arg0, Connection arg1) {
+// Return geometry as DB2 WKT		
+		return arg0.toText();
+	}
 
 }

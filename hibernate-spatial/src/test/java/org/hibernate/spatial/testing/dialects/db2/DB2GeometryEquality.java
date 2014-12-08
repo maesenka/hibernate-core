@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright Â© 2007-2012 Geovise BVBA
+ *  Copyright © 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -18,16 +18,27 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.hibernate.spatial;
 
-/**
- * Enumeration of types of Spatial Aggregation
- *
- * @author Karel Maesen
- */
-public interface SpatialAggregate {
+package org.hibernate.spatial.testing.dialects.db2;
 
-	public static final int EXTENT = 1;
-	public static final int UNION = 2;
+import com.vividsolutions.jts.geom.Geometry;
+
+import org.hibernate.spatial.testing.GeometryEquality;
+
+public class DB2GeometryEquality extends GeometryEquality{
+
+
+	/**
+	 * Test whether the SRIDs of two geometries are the same.
+	 *
+	 * @param geom1
+	 * @param geom2
+	 * @return true if SRIDs are the same
+	 */	
+	@Override
+   protected boolean testSRID(Geometry geom1, Geometry geom2) {
+	   return true;
+   }	
+
 
 }

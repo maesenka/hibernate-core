@@ -28,6 +28,7 @@ import org.hibernate.spatial.testing.dialects.mysql.MySQLTestSupport;
 import org.hibernate.spatial.testing.dialects.oracle.OracleSDOTestSupport;
 import org.hibernate.spatial.testing.dialects.postgis.PostgisTestSupport;
 import org.hibernate.spatial.testing.dialects.sqlserver.SQLServerTestSupport;
+import org.hibernate.spatial.testing.dialects.db2.DB2TestSupport;
 
 
 /**
@@ -47,6 +48,10 @@ public class TestSupportFactories {
 
 	private static Class<? extends TestSupport> getSupportFactoryClass(Dialect dialect) {
 		String canonicalName = dialect.getClass().getCanonicalName();
+
+		if ( "org.hibernate.spatial.dialect.db2.DB2SpatialDialect".equals( canonicalName ) ) {
+			return DB2TestSupport.class;
+		}		
 		if ( "org.hibernate.spatial.dialect.postgis.PostgisDialect".equals( canonicalName ) ) {
 			return PostgisTestSupport.class;
 		}
