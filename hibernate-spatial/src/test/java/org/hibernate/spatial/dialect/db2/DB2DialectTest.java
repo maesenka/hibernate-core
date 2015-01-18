@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2014 Adtech Geospatial
+ *  Copyright ï¿½ 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,15 @@
 package org.hibernate.spatial.dialect.db2;
 
 import junit.framework.TestCase;
+import org.hibernate.spatial.Log;
 import org.hibernate.spatial.SpatialDialect;
 import org.hibernate.spatial.SpatialFunction;
+import org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect;
+import org.hibernate.spatial.testing.SpatialFunctionalTestCase;
+import org.hibernate.testing.RequiresDialect;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests support for DB2 spatial functions
@@ -31,8 +37,8 @@ import org.junit.Test;
  * @author David Adler, Adtech Geospatial
  *         creation-date: 5/22/2014
  */
-
-public class DB2DialectTest extends TestCase{
+@RequiresDialect(DB2SpatialDialect.class)
+public class DB2DialectTest extends SpatialFunctionalTestCase {
 
 	SpatialDialect dialect = new DB2SpatialDialect();
 
@@ -41,5 +47,10 @@ public class DB2DialectTest extends TestCase{
 		for (SpatialFunction sf : SpatialFunction.values()) {
 			assertTrue("Dialect doesn't support " + sf, dialect.supports(sf));
 		}
+	}
+
+	@Override
+	protected Log getLogger() {
+		return null;
 	}
 }

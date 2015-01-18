@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2014 Adtech Geospatial
+ *  Copyright ï¿½ 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -35,6 +35,7 @@ import org.hibernate.spatial.LogFactory;
 import org.hibernate.spatial.SpatialFunction;
 import org.hibernate.spatial.testing.SpatialFunctionalTestCase;
 import org.hibernate.spatial.testing.dialects.db2.DB2ExpectationsFactory;
+import org.hibernate.testing.RequiresDialect;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -42,6 +43,7 @@ import org.junit.Ignore;
  * @author David Adler, Adtech Geospatial
  *         creation-date: 5/22/2014
  */
+@RequiresDialect(DB2SpatialDialect.class)
 public class DB2DialectFunctionsTest extends SpatialFunctionalTestCase {
 	
 	private static Log LOG = LogFactory.make();
