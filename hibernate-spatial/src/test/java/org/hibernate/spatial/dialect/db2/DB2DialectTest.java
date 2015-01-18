@@ -20,15 +20,12 @@
  */
 package org.hibernate.spatial.dialect.db2;
 
-import junit.framework.TestCase;
-import org.hibernate.spatial.Log;
 import org.hibernate.spatial.SpatialDialect;
 import org.hibernate.spatial.SpatialFunction;
-import org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect;
-import org.hibernate.spatial.testing.SpatialFunctionalTestCase;
-import org.hibernate.testing.RequiresDialect;
+
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -37,20 +34,20 @@ import static org.junit.Assert.assertTrue;
  * @author David Adler, Adtech Geospatial
  *         creation-date: 5/22/2014
  */
-@RequiresDialect(DB2SpatialDialect.class)
-public class DB2DialectTest extends SpatialFunctionalTestCase {
+
+public class DB2DialectTest  {
 
 	SpatialDialect dialect = new DB2SpatialDialect();
 
 	@Test
 	public void testSupports() throws Exception {
 		for (SpatialFunction sf : SpatialFunction.values()) {
-			assertTrue("Dialect doesn't support " + sf, dialect.supports(sf));
+			if ("dwithin".equalsIgnoreCase(sf.name())) {
+				assertFalse("Dialect falsely asserts support for dwithin ", dialect.supports(sf));
+			} else {
+				assertTrue("Dialect falsely asserts that is doesn't support " + sf, dialect.supports(sf));
+			}
 		}
 	}
 
-	@Override
-	protected Log getLogger() {
-		return null;
-	}
 }

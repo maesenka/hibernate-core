@@ -399,6 +399,10 @@ public abstract class AbstractExpectationsFactory {
 		return retrieveExpected(createNativeTransformStatement(epsg), GEOMETRY);
 	}
 
+	public Map<Integer, Geometry> getExtent() throws SQLException {
+		return retrieveExpected(createNativeExtentStatement(), GEOMETRY);
+	}
+
 	/**
 	 * Returns a statement corresponding to the HQL statement:
 	 * "SELECT id, touches(geom, :filter) from GeomEntity where touches(geom, :filter) = true and srid(geom) = 4326"
@@ -661,6 +665,16 @@ public abstract class AbstractExpectationsFactory {
 	 * @return
 	 */
 	protected abstract NativeSQLStatement createNativeHavingSRIDStatement(int srid);
+
+	/**
+	 * Returns the statement corresponding to the HQL statement
+	 * "SELECT max(id), extent(geom) FROM org.hibernate.spatial.integration.GeomEntity"
+	 * @return the statement corresponding to the HQL statement
+	 */
+	protected NativeSQLStatement createNativeExtentStatement() {
+		//Note that this is not an abstract method. Currently only DB2 supports this (in the integration tests).
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Creates a connection to the database

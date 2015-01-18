@@ -2,7 +2,7 @@
  * This file is part of Hibernate Spatial, an extension to the
  *  hibernate ORM solution for spatial (geographic) data.
  *
- *  Copyright © 2014 Adtech Geospatial
+ *  Copyright ï¿½ 2014 Adtech Geospatial
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -246,7 +246,6 @@ public class DB2SpatialDialect extends DB2Dialect implements SpatialDialect{
 
 	@Override
 	public boolean supportsFiltering() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

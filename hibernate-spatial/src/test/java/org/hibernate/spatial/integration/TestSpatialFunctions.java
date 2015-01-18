@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.hibernate.spatial.dialect.db2.DB2SpatialDialect;
+import org.hibernate.spatial.testing.dialects.db2.DB2ExpectationsFactory;
+import org.hibernate.testing.RequiresDialect;
 import org.junit.Test;
 
 import org.hibernate.Query;
@@ -278,7 +281,8 @@ public class TestSpatialFunctions extends SpatialFunctionalTestCase {
 
 	}
 
-	@Test
+	//skipped for DB2 Dialect because DB2 only supports this operation on geometries of the same type
+	@Test @SkipForDialect( value = DB2SpatialDialect.class)
 	public void convexhull() throws SQLException {
 		if (!isSupportedByDialect(SpatialFunction.convexhull)) {
 			return;
@@ -314,7 +318,8 @@ public class TestSpatialFunctions extends SpatialFunctionalTestCase {
 		retrieveHQLResultsAndCompare(dbexpected, hql, params);
 	}
 
-	@Test
+	//skipped for DB2 Dialect because DB2 only supports this operation on geometries of the same type
+	@Test @SkipForDialect( value = DB2SpatialDialect.class)
 	public void symdifference() throws SQLException {
 		if (!isSupportedByDialect(SpatialFunction.symdifference)) {
 			return;
@@ -325,7 +330,8 @@ public class TestSpatialFunctions extends SpatialFunctionalTestCase {
 		retrieveHQLResultsAndCompare(dbexpected, hql, params);
 	}
 
-	@Test
+	//skipped for DB2 Dialect because DB2 only supports this operation on geometries of the same type
+	@Test @SkipForDialect( value = DB2SpatialDialect.class)
 	public void geomunion() throws SQLException {
 		if (!isSupportedByDialect(SpatialFunction.geomunion)) {
 			return;
@@ -359,7 +365,8 @@ public class TestSpatialFunctions extends SpatialFunctionalTestCase {
 		retrieveHQLResultsAndCompare(dbexpected, hql, params);
 	}
 
-	@Test
+	//skipped for DB2 Dialect because DB2 out of the box knows virtually no CRS systems
+	@Test @SkipForDialect( value = DB2SpatialDialect.class)
 	public void transform() throws SQLException {
 		if (!isSupportedByDialect(SpatialFunction.transform)) {
 			return;
@@ -371,6 +378,17 @@ public class TestSpatialFunctions extends SpatialFunctionalTestCase {
 		retrieveHQLResultsAndCompare(dbexpected, hql, params);
 
 	}
+
+	@Test @RequiresDialect(value = DB2SpatialDialect.class)
+	public void extent() throws SQLException {
+		if (!isSupportedByDialect(SpatialFunction.dimension)) {
+			return;
+		}
+		Map<Integer, Geometry> dbexpected = expectationsFactory.getExtent();
+		String hql = "SELECT max(id), extent(geom) FROM org.hibernate.spatial.integration.GeomEntity";
+		retrieveHQLResultsAndCompare(dbexpected, hql);
+	}
+
 
 	public <T> void retrieveHQLResultsAndCompare(Map<Integer, T> dbexpected, String hql) {
 		retrieveHQLResultsAndCompare(dbexpected, hql, null);

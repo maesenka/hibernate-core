@@ -46,19 +46,13 @@ public class DB2ExpectationsFactory extends AbstractExpectationsFactory {
 	public DB2ExpectationsFactory(DataSourceUtils utils) {
 		super(utils);
 	}
-	/**
-	 * Returns the expected extent of all testsuite-suite geometries.
-	 *
-	 * @return map of identifier, extent
-	 * @throws SQLException
-	 */
-	public Map<Integer, Geometry> getExtent() throws SQLException {
-		return retrieveExpected(createNativeExtentStatement(), GEOMETRY);
-	}
-	protected NativeSQLStatement createNativeExtentStatement() {
+
+	@Override
+ 	protected NativeSQLStatement createNativeExtentStatement() {
 		return createNativeSQLStatement(
 				"select max(t.id), db2gse.ST_GetAggrResult(MAX(db2gse.st_BuildMBRAggr(t.geom))) from GeomTest t where db2gse.st_srid(t.geom) = 4326");
 	}
+
 	@Override
 	protected NativeSQLStatement createNativeTouchesStatement(Geometry geom) {
 		return createNativeSQLStatementAllWKTParams(

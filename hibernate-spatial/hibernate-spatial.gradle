@@ -52,6 +52,7 @@ dependencies {
 //    testRuntime([group: 'com.microsoft', name: 'sqljdbc', version: '2.0'])
 //    testRuntime("org.opengeo:geodb:0.7")
 //    testRuntime("mysql:mysql-connector-java:5.1.15")
+//    testRuntime("com.ibm.db2:db2jcc:10.5")
     testCompile( libraries.validation )
     testCompile( libraries.jandex )
     testCompile( libraries.classmate )
