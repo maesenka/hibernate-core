@@ -49,11 +49,11 @@ public class GeometrySqlTypeDescriptor implements SqlTypeDescriptor {
 
 	@Override
 	public <X> ValueBinder<X> getBinder(JavaTypeDescriptor<X> javaTypeDescriptor) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Dialect must be specified in config");
 	}
 
 	@Override
 	public <X> ValueExtractor<X> getExtractor(JavaTypeDescriptor<X> javaTypeDescriptor) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Dialect must be specified in config");
 	}
 }
