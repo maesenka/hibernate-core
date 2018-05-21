@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-docker run \
- --name db2 \
- -p 50000:50000 \
- -e DB2INST1_PASSWORD=secretpwd \
- -e LICENSE=accept \
- -d ibmcom/db2express-c db2start
+
+WD=$(dirname $0)
+
+docker run -h db2server_db2_22 \
+ --name db2_11  --restart=always \
+ -p 50000:50000  -p 55000:55000\
+ --privileged=true \
+ --env-file db2_11_env \
+ -v ${WD}/../../../hibernate-spatial-docker-dbs/db2_11 \
+ --detach  \
+ 439cb542a179  ## this image is retrieved using the Docker store at https://store.docker.com/profiles/{username}
 
 #The followin steps need to be executed
 #(This will need to end up in a script)
@@ -24,7 +29,7 @@ docker run \
 #db2se enable_db hibern8
 
 ## generate the ewkt.sql script:
-#cat > ewk.sql <<EOF
+#cat > ewkt.sql <<EOF
 #create or replace function db2gse.asewkt(geometry db2gse.st_geometry)
 #returns clob(2G)
 #specific db2gse.asewkt1
@@ -55,8 +60,11 @@ docker run \
 # to   sql with function db2gse.geomfromewkt(varchar(32000)) );
 #EOF
 
+## run the ewkt.sql script (see hibernate documentation)
+#db2 -tvf ./ewkt.sql
 
-## generate the EPSPG:4326 SRS
+
+### generate the EPSPG:4326 SRS
 #db2se create_srs hibern8  \
 # -srsName EPSG4326  \
 # -srsId   4326  \
@@ -68,6 +76,4 @@ docker run \
 # -zScale       1 \
 # -mOffset     0 \
 # -mScale 1
-
-# run the ewkt.sql script (see hibernate documentation)
-#db2 -tvf ./ewkt.sql
+#
