@@ -250,7 +250,7 @@ public class DB2SpatialDialect extends DB2Dialect implements SpatialDialect {
 
 	@Override
 	public String getDWithinSQL(String columnName) {
-		return "db2gse.ST_Distance(" + columnName + ",?, 'METER') < ?";
+		return "db2gse.ST_Intersects(" + columnName + ", db2gse.ST_Buffer(?, ?, 'METER')) = 1";
 	}
 
 	@Override
