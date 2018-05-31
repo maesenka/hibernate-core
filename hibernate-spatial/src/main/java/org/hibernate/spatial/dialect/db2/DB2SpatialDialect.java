@@ -250,7 +250,7 @@ public class DB2SpatialDialect extends DB2Dialect implements SpatialDialect {
 
 	@Override
 	public String getDWithinSQL(String columnName) {
-		return "db2gse.ST_DWithin(" + columnName + ",?, 'METER') < ?";
+		return "db2gse.ST_Distance(" + columnName + ",?, 'METER') < ?";
 	}
 
 	@Override
@@ -328,15 +328,17 @@ public class DB2SpatialDialect extends DB2Dialect implements SpatialDialect {
 	private static class DWithinFunction extends StandardSQLFunction {
 
 		public DWithinFunction() {
-			super( "db2gse.ST_Dwithin" );
+			super( "db2gse.ST_Dwithin" , StandardBasicTypes.NUMERIC_BOOLEAN);
 		}
 
 		public String render(Type firstArgumentType, final List args, final SessionFactoryImplementor factory) {
-			StringBuilder sb = new StringBuilder( "db2gse.ST_Dwithin( " );
-			sb.append( (String)args.get(0) )
-					.append(", ")
+			StringBuilder sb = new StringBuilder( "db2gse.ST_Intersects( " );
+			sb.append( (String)args.get(0) ) //
+					.append(", db2gse.ST_Buffer(")
 					.append((String)args.get(1) )
-					.append(", 'METER')");
+					.append(", ")
+					.append((String)args.get(2) )
+					.append(", 'METER'))");
 			return sb.toString();
 		}
 
