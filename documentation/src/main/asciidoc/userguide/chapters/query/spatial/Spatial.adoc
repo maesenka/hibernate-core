@@ -243,6 +243,30 @@ create transform for db2gse.st_geometry db2_program (
 
 ====
 
+++++
+<p>
+</p>
+++++
+
+.The `dwithin` function
+[NOTE]
+====
+
+The units specified in the `dwithin` function are always expressed as meters. 
+
+A typical use case for the `dwithin` function is to find all of the rows of a table where the value in a 
+geometry column is within a particular distance of a constant geometry value. For the `dwithin` function to
+perform most efficiently by exploiting a spatial index, the first parameter should specify the table column
+and the second parameter should specify the constant value, for example:
+
+[source, SQL, indent=0]
+----
+SELECT id, name, address
+	FROM customers
+	WHERE dwithin(location, 'POINT (-131.5 32.5)', 10000.0) = true
+----
+
+====
 
 
 [[spatial-types]]
