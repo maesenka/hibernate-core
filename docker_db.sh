@@ -89,19 +89,6 @@ edb() {
 
 db2() {
     docker rm -f db2 || true
-    docker run --name db2 --privileged -e DB2INSTANCE=orm_test -e DB2INST1_PASSWORD=orm_test -e DBNAME=orm_test -e LICENSE=accept -e AUTOCONFIG=false -e ARCHIVE_LOGS=false -e TO_CREATE_SAMPLEDB=false -e REPODB=false -p 50000:50000 -d ibmcom/db2:11.5.7.0
-    # Give the container some time to start
-    OUTPUT=
-    while [[ $OUTPUT != *"INSTANCE"* ]]; do
-        echo "Waiting for DB2 to start..."
-        sleep 10
-        OUTPUT=$(docker logs db2)
-    done
-    docker exec -t db2 su - orm_test bash -c ". /database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2 'connect to orm_test' && /database/config/orm_test/sqllib/bin/db2 'CREATE USER TEMPORARY TABLESPACE usr_tbsp MANAGED BY AUTOMATIC STORAGE'"
-}
-
-db2_spatial() {
-    docker rm -f db2spatial || true
     temp_dir=$(mktemp -d)
     cat <<EOF >${temp_dir}/ewkt.sql
 create or replace function db2gse.asewkt(geometry db2gse.st_geometry)
@@ -140,23 +127,23 @@ CREATE TRANSFORM FOR db2gse.ST_Geometry DB2_PROGRAM (
        TO   SQL WITH FUNCTION db2gse.geomfromewkt(varchar(32000)) )
 ;
 EOF
-    docker run --name db2spatial --privileged -e DB2INSTANCE=orm_test -e DB2INST1_PASSWORD=orm_test -e DBNAME=orm_test -e LICENSE=accept -e AUTOCONFIG=false -e ARCHIVE_LOGS=false -e TO_CREATE_SAMPLEDB=false -e REPODB=false \
-        -v ${temp_dir}:/conf  \
-        -p 50000:50000 -d ibmcom/db2:11.5.5.0
+    docker run --name db2 --privileged -e DB2INSTANCE=orm_test -e DB2INST1_PASSWORD=orm_test -e DBNAME=orm_test -e LICENSE=accept \
+              -e AUTOCONFIG=false -e ARCHIVE_LOGS=false -e TO_CREATE_SAMPLEDB=false -e REPODB=false \
+              -v ${temp_dir}:/conf \
+              -p 50000:50000 -d ibmcom/db2:11.5.7.0
 
-    # Give the container some time to start
-    OUTPUT=
-    while [[ $OUTPUT != *"Setup has completed."* ]]; do
-        echo "Waiting for DB2 to start..."
-        sleep 10
-        OUTPUT=$(docker logs db2spatial)
-    done
-    sleep 10
+        # Give the container some time to start
+        OUTPUT=
+        while [[ $OUTPUT != *"INSTANCE"* ]]; do
+            echo "Waiting for DB2 to start..."
+            sleep 10
+            OUTPUT=$(docker logs db2)
+        done
+    docker exec -t db2 su - orm_test bash -c ". /database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2 'connect to orm_test' && /database/config/orm_test/sqllib/bin/db2 'CREATE USER TEMPORARY TABLESPACE usr_tbsp MANAGED BY AUTOMATIC STORAGE'"
     echo "Enabling spatial extender"
-    docker exec -t db2spatial su - orm_test bash -c "/database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2se enable_db orm_test"
+    docker exec -t db2 su - orm_test bash -c "/database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2se enable_db orm_test"
     echo "Installing required transform group"
-    docker exec -t db2spatial su - orm_test bash -c "/database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2 'connect to orm_test' && /database/config/orm_test/sqllib/bin/db2 -tvf /conf/ewkt.sql"
-
+    docker exec -t db2 su - orm_test bash -c "/database/config/orm_test/sqllib/db2profile && /database/config/orm_test/sqllib/bin/db2 'connect to orm_test' && /database/config/orm_test/sqllib/bin/db2 -tvf /conf/ewkt.sql"
 }
 
 mssql() {
@@ -426,7 +413,6 @@ if [ -z ${1} ]; then
     echo "Provide one of:"
     echo -e "\tcockroachdb"
     echo -e "\tdb2"
-    echo -e "\tdb2_spatial"
     echo -e "\tedb"
     echo -e "\thana"
     echo -e "\tmariadb"
@@ -435,7 +421,6 @@ if [ -z ${1} ]; then
     echo -e "\tmysql_8_0"
     echo -e "\toracle"
     echo -e "\toracle_ee"
-    echo -e "\tpostgis"
     echo -e "\tpostgresql_13"
     echo -e "\tpostgresql_9_5"
     echo -e "\tsybase"

@@ -114,33 +114,16 @@ ext {
                         'jdbc.url'   : 'jdbc:mysql://' + dbHost + '/hibernate_orm_test?allowPublicKeyRetrieval=true',
                         'connection.init_sql' : ''
                 ],
-                // uses docker mysql_8_0
-                mysql8_spatial_ci: [
-                        'db.dialect' : 'org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect',
-                        'jdbc.driver': 'com.mysql.cj.jdbc.Driver',
-                        'jdbc.user'  : 'hibernate_orm_test',
-                        'jdbc.pass'  : 'hibernate_orm_test',
-                        'jdbc.url'   : 'jdbc:mysql://' + dbHost + '/hibernate_orm_test?allowPublicKeyRetrieval=true',
-                        'connection.init_sql' : ''
-                ],
                 mariadb : [
-                        'db.dialect' : 'org.hibernate.dialect.MariaDBDialect',
-                        'jdbc.driver': 'org.mariadb.jdbc.Driver',
-                        'jdbc.user'  : 'hibernate_orm_test',
-                        'jdbc.pass'  : 'hibernate_orm_test',
-                        'jdbc.url'   : 'jdbc:mariadb://' + dbHost + '/hibernate_orm_test',
-                        'connection.init_sql' : ''
+                        'db.dialect'         : 'org.hibernate.dialect.MariaDBDialect',
+                        'jdbc.driver'        : 'org.mariadb.jdbc.Driver',
+                        'jdbc.user'          : 'hibernate_orm_test',
+                        'jdbc.pass'          : 'hibernate_orm_test',
+                        'jdbc.url'           : 'jdbc:mariadb://' + '127.0.0.1' + '/hibernate_orm_test',
+                        'connection.init_sql': ''
                 ],
                 mariadb_ci : [
                         'db.dialect' : 'org.hibernate.dialect.MariaDBDialect',
-                        'jdbc.driver': 'org.mariadb.jdbc.Driver',
-                        'jdbc.user'  : 'root',
-                        'jdbc.pass'  : 'hibernate_orm_test',
-                        'jdbc.url'   : 'jdbc:mariadb://' + dbHost + '/hibernate_orm_test',
-                        'connection.init_sql' : ''
-                ],
-                mariadb_spatial_ci : [
-                        'db.dialect' : 'org.hibernate.spatial.dialect.mariadb.MariaDB103SpatialDialect',
                         'jdbc.driver': 'org.mariadb.jdbc.Driver',
                         'jdbc.user'  : 'root',
                         'jdbc.pass'  : 'hibernate_orm_test',
@@ -153,15 +136,6 @@ ext {
                         'jdbc.user'  : 'hibernate_orm_test',
                         'jdbc.pass'  : 'hibernate_orm_test',
                         'jdbc.url'   : 'jdbc:mysql://' + dbHost + '/hibernate_orm_test',
-                        'connection.init_sql' : ''
-                ],
-                postgis : [
-                        'db.dialect' : 'org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect',
-                        'jdbc.driver': 'org.postgresql.Driver',
-                        'jdbc.user'  : 'hibernate_orm_test',
-                        'jdbc.pass'  : 'hibernate_orm_test',
-                        // Disable prepared statement caching due to https://www.postgresql.org/message-id/CAEcMXhmmRd4-%2BNQbnjDT26XNdUoXdmntV9zdr8%3DTu8PL9aVCYg%40mail.gmail.com
-                        'jdbc.url'   : 'jdbc:postgresql://' + dbHost + '/hibernate_orm_test?preparedStatementCacheQueries=0',
                         'connection.init_sql' : ''
                 ],
                 oracle : [
@@ -205,14 +179,6 @@ ext {
                         'jdbc.url'   : 'jdbc:oracle:thin:@' + dbHost + ':1521:XE',
                         'connection.init_sql' : ''
                 ],
-                oracle_spatial_ci : [
-                        'db.dialect' : 'org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect',
-                        'jdbc.driver': 'oracle.jdbc.OracleDriver',
-                        'jdbc.user'  : 'SYSTEM',
-                        'jdbc.pass'  : 'Oracle18',
-                        'jdbc.url'   : 'jdbc:oracle:thin:@' + dbHost + ':1521:XE',
-                        'connection.init_sql' : ''
-                ],
                 mssql : [
                         'db.dialect' : 'org.hibernate.dialect.SQLServerDialect',
                         'jdbc.driver': 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
@@ -247,14 +213,6 @@ ext {
                 ],
                 db2_ci : [
                         'db.dialect' : 'org.hibernate.dialect.DB2Dialect',
-                        'jdbc.driver': 'com.ibm.db2.jcc.DB2Driver',
-                        'jdbc.user'  : 'orm_test',
-                        'jdbc.pass'  : 'orm_test',
-                        'jdbc.url'   : 'jdbc:db2://' + dbHost + ':50000/orm_test',
-                        'connection.init_sql' : ''
-                ],
-                db2_spatial_ci : [
-                        'db.dialect' : 'org.hibernate.spatial.dialect.db2.DB2SpatialDialect',
                         'jdbc.driver': 'com.ibm.db2.jcc.DB2Driver',
                         'jdbc.user'  : 'orm_test',
                         'jdbc.pass'  : 'orm_test',
